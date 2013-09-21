@@ -8,6 +8,7 @@
   "dependencies": {
     "express": "latest",
     "connect-redis": "latest",
+    "mysql": "latest",
     "step": "latest"
   },
   "devDependencies": {
