@@ -1,7 +1,9 @@
 // router
 
 exports.routes = function (app) {
-  app.get('/', function (req, res, next) {
+  var PRE = '/api';
+
+  app.get(PRE + '/', function (req, res, next) {
     res.send('OK!');
   });
 };
