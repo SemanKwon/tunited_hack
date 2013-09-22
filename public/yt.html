@@ -12,6 +12,9 @@
     #message p {
       line-height: 32px;
     }
+    #msg {
+      display: none;
+    }
     #sender {
       display: none;
     }
@@ -46,7 +49,7 @@
     <div id="background">
       <div id="message">
         <p id="sender"><img src="https://lh4.googleusercontent.com/-za47ko1Puc0/T3tFaAJFSAI/AAAAAAAAADY/CGS4jvbXCBU/w183-h184-no/carlyrae.jpg"><span>Carly Rae Jepsen</span></p>
-        <p>A new music video was requested!</p>
+        <p id="msg">A new music video was requested!</p>
       </div>
     </div>
     </div>
@@ -68,6 +71,7 @@
     var socket = io.connect('http://'+document.domain+':1126/');
     socket.on('host_1111', function (data) {
       $('#message').css('display', 'block');
+      $('#msg').css('display', 'block');
       $('#sender').css('display', 'block');
       if (data.sender_photo)
         $('#sender img').attr('src', data.sender_photo);
