@@ -28,9 +28,7 @@ var io = require('socket.io').listen(1126);
 var sockets = [];
 
 io.sockets.on('connection', function (socket) {
-  console.log('connected!');
   sockets.push(socket);
-  console.log(sockets.length);
   /*socket.on('my other event', function (data) {
     console.log(data);
   });*/
