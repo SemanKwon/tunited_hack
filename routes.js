@@ -18,6 +18,13 @@ exports.routes = function (app) {
   app.delete(PRE + '/lists/:list_id', deleteLists);
   app.post(PRE + '/lists/:list_id', postListsSong);
   app.delete(PRE + '/lists/:list_id/:song_id', deleteListsSong);
+
+  // host api
+  app.get(PRE + '/users/hosts', getHosts);
+  app.post(PRE + '/users/host', postHost);
+  app.delete(PRE + '/users/host/:host_id', deleteHost);
+  app.post(PRE + '/users/connect/:host_id', postHost);
+  app.put(PRE + '/users/disconnect/:host_id', postHost);
 };
 
 function login(req, res, next) {
@@ -142,3 +149,39 @@ function deleteListsSong(req, res, next) {
     res.json(data);
   });
 }
+
+function getHosts(req, res, next) {
+
+  models.getHosts({}, function (err, data) {
+    if (err) return res.send(500, err);
+
+    res.json(data);
+  });
+}
+
+function postHost(req, res, next) {
+  var options = {
+    user_id: req.session.user_id,
+    list_id: req.param('list_id')
+  };
+
+  models.createHost(options, function (err, data) {
+    if (err) return res.send(500, err);
+
+    res.json(data);
+  });
+}
+
+function deleteHost(req, res, next) {
+  var options = {
+    user_id: req.session.user_id,
+    host_id: req.param('host_id')
+  };
+
+  models.deleteHost(options, function (err, data) {
+    if (err) return res.send(500, err);
+
+    res.json(data);
+  });
+}
+

@@ -18,7 +18,7 @@ exports.getUser = function (options, callback) {
       conn.release();
       callback(err, rows);
     });
-  })
+  });
 };
 
 
@@ -31,7 +31,7 @@ exports.addList = function (options, callback) {
       conn.release();
       callback(err, { list_id: result.insertId });
     });
-  })
+  });
 };
 
 exports.getLists = function (options, callback) {
@@ -155,3 +155,40 @@ function renderSong(row) {
     play_count: row.play_count
   }
 }
+
+exports.getHosts = function (options, callback) {
+  var sql = 'SELECT * FROM hosts';
+
+  pool.getConnection(function(err, conn){
+    conn.query(sql, function (err, results) {
+      conn.release();
+      callback(err, results);
+    });
+  });
+};
+
+exports.createHost = function (options, callback) {
+  var sql = 'INSERT INTO hosts SET ?';
+  var post = { user_id: options.user_id, list_id: options.list_id };
+
+  pool.getConnection(function(err, conn){
+    conn.query(sql, post, function (err, result) {
+      conn.release();
+      callback(err, { host_id: result.insertId });
+    });
+  });
+};
+
+exports.deleteHost = function (options, callback) {
+  var sql = 'DELETE FROM hosts WHERE user_id=' + mysql.escape(options.user_id)
+    + ' AND host_id=' + mysql.escape(options.host_id);
+
+  pool.getConnection(function(err, conn){
+    conn.query(sql, function (err, result) {
+      conn.release();
+      callback(err, {});
+    });
+  });
+};
+
+
