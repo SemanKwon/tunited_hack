@@ -68,14 +68,22 @@ function searchYT(req, res, next) {
 }
 
 function playVideo(req, res, next) {
-  var video_id = req.param('video_id')
-    , start_seconds = req.param('start_seconds') || 0;
+  models.getUser({ user_id: req.session.user_id || 2 }, function (err, data) {
 
-  sockets.forEach(function(s){
-    s.emit('host_1111', { videoId: video_id, startSeconds: start_seconds });
+    var u = data[0];
+    var video_id = req.param('video_id')
+      , start_seconds = req.param('start_seconds') || 0;
+    var json = {
+      videoId: video_id, startSeconds: start_seconds,
+      sender_name: u.name, sender_photo: u.profile_photo
+    };
+
+    sockets.forEach(function(s){
+      s.emit('host_1111', json);
+    });
+    res.send({});
+
   });
-
-  res.send({});
 }
 
 function postLists(req, res, next) {
