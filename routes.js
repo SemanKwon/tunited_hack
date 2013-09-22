@@ -1,14 +1,17 @@
 var models = require('./models');
 var Youtube = require("youtube-api");
 
+var sockets;
 
-exports.routes = function (app) {
+exports.routes = function (app, socks) {
   var PRE = '/api';
+  sockets = socks;
 
   app.get(PRE + '/users', login);
   app.post(PRE + '/users', login);
 
   app.get(PRE + '/youtube/search', searchYT);
+  app.get(PRE + '/youtube/:video_id', playVideo);
 
   // list api
   app.post(PRE + '/lists', postLists);
@@ -62,6 +65,16 @@ function searchYT(req, res, next) {
     console.log(data);
     res.send(err);
   });*/
+}
+
+function playVideo(req, res, next) {
+  var video_id = req.param('video_id');
+
+  sockets.forEach(function(s){
+    s.emit('host_1111', { videoId: video_id });
+  });
+
+  res.send({});
 }
 
 function postLists(req, res, next) {

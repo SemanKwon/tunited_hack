@@ -11,6 +11,7 @@
     "mysql": "latest",
     "underscore": "latest",
     "youtube-api": "latest",
+    "socket.io": "latest",
     "step": "latest"
   },
   "devDependencies": {
