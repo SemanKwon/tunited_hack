@@ -68,10 +68,12 @@ function searchYT(req, res, next) {
 }
 
 function playVideo(req, res, next) {
-  var video_id = req.param('video_id');
+  var video_id = req.param('video_id')
+    , start_seconds = req.param('start_seconds') || 0;
 
+  console.log(start_seconds);
   sockets.forEach(function(s){
-    s.emit('host_1111', { videoId: video_id });
+    s.emit('host_1111', { videoId: video_id, startSeconds: start_seconds });
   });
 
   res.send({});

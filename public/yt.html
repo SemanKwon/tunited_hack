@@ -52,7 +52,12 @@
     socket.on('host_1111', function (data) {
       $('#message').css('display', 'block');
       $('#background').css('display', 'block');
-      ytplayer.loadVideoById(data.videoId);
+      var opt = {
+        videoId: data.videoId,
+        startSeconds: parseInt(data.startSeconds) || 0,
+        suggestedQuality: 'large'
+      };
+      ytplayer.loadVideoById(opt);
       //socket.emit('my other event', { my: 'data' });
       setTimeout(function(){
         $('#message').css('display', 'none'); 
