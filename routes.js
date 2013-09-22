@@ -23,8 +23,8 @@ exports.routes = function (app) {
   app.get(PRE + '/users/hosts', getHosts);
   app.post(PRE + '/users/host', postHost);
   app.delete(PRE + '/users/host/:host_id', deleteHost);
-  app.post(PRE + '/users/connect/:host_id', postHost);
-  app.put(PRE + '/users/disconnect/:host_id', postHost);
+  app.post(PRE + '/users/connect/:host_id', connectHost);
+  app.put(PRE + '/users/disconnect/:host_id', disconnectHost);
 };
 
 function login(req, res, next) {
@@ -184,4 +184,31 @@ function deleteHost(req, res, next) {
     res.json(data);
   });
 }
+
+function connectHost(req, res, next) {
+  var options = {
+    user_id: req.session.user_id,
+    host_id: req.param('host_id')
+  };
+
+  models.connectHost(options, function (err, data) {
+    if (err) return res.send(500, err);
+
+    res.json(data);
+  });
+}
+
+function disconnectHost(req, res, next) {
+  var options = {
+    user_id: req.session.user_id,
+    host_id: req.param('host_id')
+  };
+
+  models.disconnectHost(options, function (err, data) {
+    if (err) return res.send(500, err);
+
+    res.json(data);
+  });
+}
+
 
