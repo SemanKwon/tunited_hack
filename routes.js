@@ -69,20 +69,23 @@ function searchYT(req, res, next) {
 
 function playVideo(req, res, next) {
   models.getUser({ user_id: req.session.user_id || 2 }, function (err, data) {
-
     var u = data[0];
     var video_id = req.param('video_id')
       , start_seconds = req.param('start_seconds') || 0;
-    var json = {
-      videoId: video_id, startSeconds: start_seconds,
-      sender_name: u.name, sender_photo: u.profile_photo
-    };
 
-    sockets.forEach(function(s){
-      s.emit('host_1111', json);
+    models.getSong({youtube_url: video_id}, function(err, data){
+      var s = data[0];
+      var json = {
+        videoId: video_id, startSeconds: start_seconds,
+        sender_name: u.name, sender_photo: u.profile_photo, song_title: s.title
+      };
+
+      sockets.forEach(function(s){
+        s.emit('host_1111', json);
+      });
+      res.send({});
+
     });
-    res.send({});
-
   });
 }
 
