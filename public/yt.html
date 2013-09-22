@@ -45,7 +45,7 @@
     <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; ">
     <div id="background">
       <div id="message">
-        <p id="sender"><img src="http://scontent-b-pao.xx.fbcdn.net/hphotos-prn1/q71/1237635_10104097022705471_2053702249_n.jpg"><span>Douglas Ross</span></p>
+        <p id="sender"><img src="https://lh4.googleusercontent.com/-za47ko1Puc0/T3tFaAJFSAI/AAAAAAAAADY/CGS4jvbXCBU/w183-h184-no/carlyrae.jpg"><span>Carly Rae Jepsen</span></p>
         <p>A new music video was requested!</p>
       </div>
     </div>
@@ -68,8 +68,7 @@
     var socket = io.connect('http://'+document.domain+':1126/');
     socket.on('host_1111', function (data) {
       $('#message').css('display', 'block');
-      if (data.sender_photo)
-        $('#sender').css('display', 'block');
+      $('#sender').css('display', 'block');
       if (data.sender_photo)
         $('#sender img').attr('src', data.sender_photo);
       if (data.sender_name)
