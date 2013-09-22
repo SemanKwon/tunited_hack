@@ -19,8 +19,8 @@ app.configure(function(){
   app.use(express.cookieParser('tunited.tv'));
   var sessionStore = new RedisStore();
   app.use(express.session({ cookie:{ path:'/' }, secret:"songjihyo", store:sessionStore }));
-  app.use(app.router);
   app.use(express.logger());
+  app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
   app.use(express.errorHandler({ showStack: true, dumpExceptions: true }));
 });
