@@ -156,27 +156,82 @@ function renderSong(row) {
   }
 }
 
+function renderHosts(rows) {
+  var data = [];
+
+  rows.forEach(function(r){
+    var found = _.find(data, function(d){ return d.host_id == r.host_id; });
+
+    if (found) {
+      found.list.songs.push(renderSong(r));
+    } else {
+      data.push(renderHost(r));
+    }
+  });
+
+  return data;
+}
+
+function renderHost(row) {
+  return {
+    host_id: row.host_id,
+    user_id: row.user_id,
+    list: renderList(row)
+  }
+}
+
 exports.getHosts = function (options, callback) {
-  var sql = 'SELECT * FROM hosts';
+  var sql = 'SELECT * FROM hosts left join lists using(list_id) left join listitems using(list_id)'
+    + ' left join songs using(song_id)';
 
   pool.getConnection(function(err, conn){
     conn.query(sql, function (err, results) {
       conn.release();
-      callback(err, results);
+      callback(err, renderHosts(results));
     });
   });
 };
 
 exports.createHost = function (options, callback) {
-  var sql = 'INSERT INTO hosts SET ?';
-  var post = { user_id: options.user_id, list_id: options.list_id };
+  var conn
+    , new_list_id;
 
-  pool.getConnection(function(err, conn){
-    conn.query(sql, post, function (err, result) {
+  Step(
+
+    function getConn() {
+      pool.getConnection(this);
+    },
+
+    function insertTempList(err, connection) {
+      conn = connection;
+
+      var sql = 'INSERT INTO lists (folder_name, user_id) SELECT folder_name, '+ mysql.escape(options.user_id)
+        + ' FROM lists WHERE list_id=' + mysql.escape(options.list_id);
+      conn.query(sql, this);
+    },
+
+    function insertSong(err, result) {
+      new_list_id = result.insertId;
+
+      var sql = 'INSERT INTO listitems (list_id, song_id, user_id)'
+        + ' SELECT '+ new_list_id + ', song_id, ' + mysql.escape(options.user_id)
+        + ' FROM listitems WHERE list_id=' + mysql.escape(options.list_id);
+
+      conn.query(sql, this);
+    },
+
+    function insertHost(err, result) {
+
+      var sql = 'INSERT INTO hosts SET ?';
+      var post = { user_id: options.user_id, list_id: new_list_id };
+      conn.query(sql, post, this);
+    },
+
+    function end(err, result) {
       conn.release();
       callback(err, { host_id: result.insertId });
-    });
-  });
+    }
+  );
 };
 
 exports.deleteHost = function (options, callback) {
