@@ -10,6 +10,7 @@
     "connect-redis": "latest",
     "mysql": "latest",
     "underscore": "latest",
+    "youtube-api": "latest",
     "step": "latest"
   },
   "devDependencies": {

@@ -1,10 +1,14 @@
 var models = require('./models');
+var Youtube = require("youtube-api");
+
 
 exports.routes = function (app) {
   var PRE = '/api';
 
   app.get(PRE + '/users', login);
   app.post(PRE + '/users', login);
+
+  app.get(PRE + '/youtube/search', searchYT);
 
   // list api
   app.post(PRE + '/lists', postLists);
@@ -26,6 +30,31 @@ function login(req, res, next) {
     req.session.user_id = user_id;
     res.json(data[0]);
   });
+}
+
+function searchYT(req, res, next) {
+  var q = req.param('q');
+  Youtube.authenticate({
+    type: "oauth",
+    token: 'AIzaSyAZNZHr-okZBzoq2DZZBPeYYb5O56FFPzE'
+  });
+
+  Youtube.channels.list({
+    "part": "id",
+    "mySubscribers": true,
+    "maxResults": 50
+  }, function (err, data) {
+    console.log(err, data);
+  });
+
+  /*Youtube.search.list({
+    part: 'snippet',
+    q: 'psy'
+  }, function (err, data) {
+    console.log(err);
+    console.log(data);
+    res.send(err);
+  });*/
 }
 
 function postLists(req, res, next) {
