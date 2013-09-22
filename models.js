@@ -111,7 +111,7 @@ exports.addSong = function (options, callback) {
         var sql = 'INSERT INTO listitems SET ?';
         var post= { list_id: options.list_id, song_id: options.song_id, user_id: options.user_id };
 
-        conn.query(sql, this);
+        conn.query(sql, post, this);
       },
       function end() {
         conn.release();
