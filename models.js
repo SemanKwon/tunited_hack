@@ -128,7 +128,7 @@ function renderLists(rows) {
     var found = _.find(data, function(d){ return d.list_id == r.list_id; });
 
     if (found) {
-      found.song.push(renderSong(r));
+      found.songs.push(renderSong(r));
     } else {
       data.push(renderList(r));
     }
