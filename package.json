@@ -9,6 +9,7 @@
     "express": "latest",
     "connect-redis": "latest",
     "mysql": "latest",
+    "underscore": "latest",
     "step": "latest"
   },
   "devDependencies": {
