@@ -63,8 +63,8 @@
     <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; ">
     <div id="background">
       <div id="song_title_bar">
-        <p id="song_title">PSY - GANGNAM STYLE (강남스타일) M/V</p>
-        <p id="request_user">casted by Douglas</p>
+        <p id="song_title"></p>
+        <p id="request_user"></p>
       </div>
       <div id="message">
         <p id="sender"><img src="http://scontent-b-pao.xx.fbcdn.net/hphotos-prn1/q71/1237635_10104097022705471_2053702249_n.jpg"><span>Douglas Ross (Host)</span></p>
@@ -100,7 +100,7 @@
 
       if (data.sender_name) {
         $('#sender span').text(data.sender_name);
-        $('#request_user').text(data.sender_name);
+        $('#request_user').text('casted by ' + data.sender_name);
       }
 
       if (data.song_title) {
