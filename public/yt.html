@@ -14,6 +14,11 @@
       vertical-align: middle; line-height: 32px;
     }
     #background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       background: #000000 url('background.jpg') no-repeat fixed center; 
       background-size: cover;
       z-index: 1000;
@@ -25,8 +30,8 @@
 </head>
 <body>
   <div style="width: 100%; height: 100%;">
-    <div id="message"><p>A new music video was requested!</p></div>
     <div id="background"></div>
+    <div id="message"><p>A new music video was requested!</p></div>
     <div id="ytapiplayer">You need Flash player 8+ and JavaScript enabled to view this video.</div>
   </div>
   <script type="text/javascript">
@@ -45,10 +50,12 @@
     var socket = io.connect('http://'+document.domain+':1126/');
     socket.on('host_1111', function (data) {
       $('#message').css('display', 'block');
+      $('#background').css('display', 'block');
       ytplayer.loadVideoById(data.videoId);
       //socket.emit('my other event', { my: 'data' });
       setTimeout(function(){
         $('#message').css('display', 'none');
+        $('#background').css('display', 'none');
       }, 3000);
     });
   </script>
