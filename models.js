@@ -21,6 +21,18 @@ exports.getUser = function (options, callback) {
   });
 };
 
+exports.getSong = function (options, callback) {
+  var sql = 'SELECT song_id, title FROM songs WHERE youtube_url='
+    + mysql.escape(options.youtube_url);
+
+  pool.getConnection(function(err, conn){
+    conn.query(sql, function (err, rows) {
+      conn.release();
+      callback(err, rows);
+    });
+  });
+};
+
 
 exports.addList = function (options, callback) {
   var sql = 'INSERT INTO lists SET ?';

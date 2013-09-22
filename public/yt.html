@@ -88,12 +88,25 @@
   </script>
   <script type="text/javascript">
     var socket = io.connect('http://'+document.domain+':1126/');
-    socket.on('host_1111', function (data) {
+
+    socket.on('host_1111', callback_socket);
+
+    function callback_socket(data) {
       $('#msg').text('A new music request!');
-      if (data.sender_photo)
+
+      if (data.sender_photo) {
         $('#sender img').attr('src', data.sender_photo);
-      if (data.sender_name)
+      }
+
+      if (data.sender_name) {
         $('#sender span').text(data.sender_name);
+        $('#request_user').text(data.sender_name);
+      }
+
+      if (data.song_title) {
+        $('#song_title').text(data.song_title);
+      }
+
       $('#background').css('display', 'block');
       var opt = {
         videoId: data.videoId,
@@ -105,7 +118,7 @@
       setTimeout(function(){
         $('#background').css('display', 'none');
       }, 3000);
-    });
+    }
   </script>
 </body>
 </html>
