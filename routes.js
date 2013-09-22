@@ -149,7 +149,7 @@ function deleteLists(req, res, next) {
 
 function postListsSong(req, res, next) {
   var options = {
-    user_id: req.session.user_id,
+    user_id: req.session.user_id || 1,
     list_id: req.param('list_id'),
     song_id: req.param('song_id')
   };

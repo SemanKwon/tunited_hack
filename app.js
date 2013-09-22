@@ -20,6 +20,7 @@ app.configure(function(){
   var sessionStore = new RedisStore();
   app.use(express.session({ cookie:{ path:'/' }, secret:"songjihyo", store:sessionStore }));
   app.use(app.router);
+  app.use(express.logger());
   app.use(express.static(path.join(__dirname, 'public')));
   app.use(express.errorHandler({ showStack: true, dumpExceptions: true }));
 });
